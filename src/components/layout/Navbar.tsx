@@ -1,9 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 import {
   Accordion,
 } from "@/components/ui/accordion";
@@ -70,6 +68,10 @@ const Navbar = ({
     {
       title: "About",
       url: "/about",
+    },
+    {
+      title: "Dashboard",
+      url: "/dashboard",
     },
   ],
   auth = {
