@@ -15,7 +15,7 @@ export default async function Home() {
   
   return (
     <>
-    <div className="grid grid-cols-3 max-w-7xl mx-auto px-4 gap-5 my-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 max-w-7xl mx-auto px-4 gap-5 my-8">
       { data?.data?.map((post: BlogPost)=>(
         <BlogCard key={post.id} post={post}/>
       ))}
