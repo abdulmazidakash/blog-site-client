@@ -6,13 +6,15 @@ import { useEffect, useState } from "react"
 
 export default function AboutPage() {
   const [data, setData] = useState();
+  const [error, setError] = useState<{message: string} | null>(null);
 
   console.log(data);
 
   useEffect(() => {
     (async () => {
-      const { data } = await blogService.getBlogPosts();
+      const { data, error} = await blogService.getBlogPosts();
       setData(data);
+      setError(error)
     })();
   }, []);
 
