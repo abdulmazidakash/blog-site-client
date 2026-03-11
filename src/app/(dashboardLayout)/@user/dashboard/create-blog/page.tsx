@@ -1,7 +1,10 @@
-import React from 'react'
+import { CreateBlogFormClient } from "@/components/modules/user/createBlog/CreateBlogFromClient";
 
-export default function CreateBlogPage() {
+
+export default async function CreateBlogPage() {
   return (
-    <div>CreateBlogPage</div>
-  )
+    <div className="h-[calc(100vh-100px)] flex items-center justify-center">
+      <CreateBlogFormClient />
+    </div>
+  );
 }
