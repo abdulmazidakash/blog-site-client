@@ -1,42 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
-import { userService } from "./app/services/user.service";
 import { Roles } from "./constants/roles";
+import { userService } from "./app/services/user.service";
 
-export async function proxy(request: NextRequest){
-    // console.log('hello from proxy:',request.url);
-    const pathname = request.nextUrl.pathname;
-    let isAuthenticated = false;
-    let isAdmin = false;
+export async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
 
-    const { data } = await userService.getSession();
+  let isAuthenticated = false;
+  let isAdmin = false;
 
-    if(data){
-        isAuthenticated = true;
-        isAdmin = data.user.role === Roles.admin;
-    }
+  const { data } = await userService.getSession();
+  console.log('get session proxy data:===>',data)
 
-    // user is not authenticated at all
-    if(!isAuthenticated){
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+  if (data) {
+    isAuthenticated = true;
+    isAdmin = data.user.role === Roles.admin;
+  }
 
-    // user is authenticated but role === admin
-    // user can not visit user dashboard
-    if(isAdmin && pathname.startsWith('/dashboard')){
-        return NextResponse.redirect(new URL('/admin-dashboard', request.url));
-    }
+  //* User in not authenticated at all
+  if (!isAuthenticated) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
-    // user is authenticated but role = user
-    // user can not visit admin dashboard
-    if(!isAdmin && pathname.startsWith("/admin-dashboard")){
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
+  //* User is authenticated and role = ADMIN
+  //* User can not visit user dashboard
+  if (isAdmin && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+  }
 
-    console.log('session data:===>',data)
+  //* User is authenticated and role = USER
+  //* User can not visit admin-dashboard
+  if (!isAdmin && pathname.startsWith("/admin-dashboard")) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
-    return NextResponse.next();
-};
+  return NextResponse.next();
+}
 
 export const config = {
-    matcher: ['/dashboard', "/dashboard/:path*", "/admin-dashboard"]
-}
+  matcher: [
+    "/dashboard",
+    "/dashboard/:path*",
+    "/admin-dashboard",
+    "/admin-dashboard/:path*",
+  ],
+};

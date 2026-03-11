@@ -1,42 +1,46 @@
-import * as React from "react"
+import * as React from "react";
+
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
+} from "@/components/ui/sidebar";
+import Link from "next/link";
+import { Roles } from "@/constants/roles";
+import { Route } from "@/app/types";
 import { adminRoutes } from "@/app/routes/adminRoutes";
 import { userRoutes } from "@/app/routes/userRoutes";
-import { Route } from "@/app/types";
 
-export function AppSidebar({ user, ...props }: { user: { role: string } & React.ComponentProps<typeof Sidebar> }) {
-
+export function AppSidebar({
+  user,
+  ...props
+}: {
+  user: { role: string } & React.ComponentProps<typeof Sidebar>;
+}) {
   let routes: Route[] = [];
 
   switch (user.role) {
-    case "admin":
+    case Roles.admin:
       routes = adminRoutes;
       break;
-
-    case "user":
+    case Roles.user:
       routes = userRoutes;
       break;
-
     default:
       routes = [];
       break;
   }
+
   return (
     <Sidebar {...props}>
-
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
         {routes.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
@@ -44,7 +48,7 @@ export function AppSidebar({ user, ...props }: { user: { role: string } & React.
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild >
+                    <SidebarMenuButton asChild>
                       <Link href={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -56,5 +60,5 @@ export function AppSidebar({ user, ...props }: { user: { role: string } & React.
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

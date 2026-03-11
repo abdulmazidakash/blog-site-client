@@ -17,6 +17,7 @@ import {
 import { useForm } from "@tanstack/react-form";
 import * as z from 'zod';
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   password: z.string().min(8, "Minimum 8 characters required"),
